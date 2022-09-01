@@ -1,0 +1,24 @@
+.input-label, label {
+ font-family: 'Inter';
+ font-style: normal;
+ font-weight: 500;
+ font-size: 15px;
+ line-height: 18px;
+ color: #333;
+ border: none !important;
+}
+
+
+.custom-input :where(.input_wrapper, input), select, textarea {
+ /* background: #FAFAFA; */
+ background: #e9edff;
+ border-radius: 4px;
+}
+
+.input_wrapper .icon {
+ cursor: pointer;
+}
+
+.error{
+ border: 1px solid red;
+}
