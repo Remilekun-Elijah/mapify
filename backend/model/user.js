@@ -20,7 +20,7 @@ const userSchema = new Schema({
 })
 
 const locationSchema = new Schema({
- address: String,
+ description: String,
  longitude: Number,
  latitude: Number,
  image: String

@@ -14,7 +14,7 @@ const Api = new BACKEND();
 
 export default function AddLocation() {
 	const values = {
-		address: "",
+		description: "",
 		latitude: 0,
 		longitude: 0,
 		image: "",
@@ -100,17 +100,23 @@ export default function AddLocation() {
 									)}
 								</div>
 							</div>
-							<h1 className="mb-10  pt-5  text-center text-md">
+							<h1 className="mb-10  pt-3  text-center text-md">
 								Location Image
 							</h1>
 
-							<Input
-								value={formData.address}
-								name={"address"}
-								wrapperClass={"mt-5 input__two"}
-								label={"Address"}
+<label htmlFor="description" className="block text-sm font-bold mb-2 input-label">Description <span
+								style={{ top: "2px", color: "red" }}
+								className="relative">
+								*
+							</span></label>
+							<textarea
+							className="w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none outline-none"
+							rows={3}
+							id="description"
+								value={formData.description}
+								name={"description"}
+								label={"Description"}
 								placeholder={" "}
-								maxLength={20}
 								minLength={3}
 								labelClass={" "}
 								inputClass={"shadow"}

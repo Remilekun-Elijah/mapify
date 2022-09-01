@@ -9,8 +9,8 @@ const Dashboard = () => {
 const [mapData, setMapData] = React.useState([])
  const navigate = useNavigate()
 	const center = {
-			lat: 6.5243793,
-			lng: 3.379205700000057,
+		lat:  6.458985,
+		lng: 3.601521,
 		};
 
 		React.useEffect(()=>{
@@ -19,8 +19,7 @@ const [mapData, setMapData] = React.useState([])
 				to: "/location",
 				useAlert: false
 			}).then(res=>{
-				console.log(res);
-					setMapData(res.locations.map(d=>({lat: d.latitude, lng: d.longitude, addr: d.address, img: d.image})))
+					setMapData(res.locations.map(d=>({lat: d.latitude, lng: d.longitude, addr: d.description, img: d.image})))
 			}).catch(console.error);
 		}, [])
 	
@@ -30,7 +29,7 @@ const [mapData, setMapData] = React.useState([])
 			<Header />
 			<div className="flex flex-col relative justify-center md:flex-row mt-20 px-[10%]">
 				<h1 className="text-center  text-2xl ">
-					Available locations are marked with <b>GPS icon(s)</b>{" "}
+					Available locations are marked with <b>GPS Marker(s)</b>{" "}
 				</h1>
 				<div className=" md:absolute mt-5 md:mt-0 md:right-[10%]">
 					<button className="px-5 py-1 bg-slate-500 hover:bg-slate-900 rounded text-white" onClick={_=> navigate('/add-new-location')}>Add New</button>
