@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer, Marker, Popup, TileLayer, Circle } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer,  } from "react-leaflet";
 
 const Map = ({center, mapData}) => {
  return (
@@ -14,14 +14,6 @@ const Map = ({center, mapData}) => {
  return (
   
  <Marker {...{ key, position }} >
-  {/* <Circle
-  { ...{
-    center,
-    pathOptions: {fillColor: 'red'},
-    radius: 650,
-    stroke: false
-  }}
-  /> */}
 
       <Popup>
         {<div className="flex flex-col">

@@ -48,3 +48,9 @@
  z-index: 200;
  transition: transform .5s ease
  }
+
+ @media screen and (max-width: 576px) {
+  .modal__one h1 {
+   font-size: 25px !important;
+  }
+ }

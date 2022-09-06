@@ -4,7 +4,6 @@ import { GrCheckbox } from "react-icons/gr";
 import Pagination from "./Pagination";
 import Loader from "../Loader/Loader";
 import "./Table.css";
-import { useNavigate } from "react-router-dom";
 
 export default function Table({
 	data,
@@ -101,7 +100,7 @@ export default function Table({
 					<span className="ml-auto text-white">Unselect All</span>
 				</div>
 			</div>
-					<div className="overflow-x-auto">
+					<div className="sm:overflow-x-hidden overflow-x-auto">
 			<table className="border-collapse w-full table-auto">
 				<thead className="border-spacing-y-20">
 					<tr className="">

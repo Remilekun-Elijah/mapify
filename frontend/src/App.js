@@ -6,7 +6,6 @@ import AddLocation from './pages/AddLocation';
 import ViewLocation from './pages/ViewLocation';
 import { INotFound } from './utils/icons';
 import Button from './components/Button';
-import Storage from './utils/storage';
 import PrivateRoutes from './utils/PrivateRoutes';
 
 function App() {

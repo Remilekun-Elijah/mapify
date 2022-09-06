@@ -10,7 +10,7 @@ export default function ModalOne({
 	className
 }) {
 	useEffect(() => {
-			document.body.style.overflow = showModal ? "hidden" : "scroll";
+			document.body.style.overflowY = showModal ? "hidden" : "scroll";
 	}, [showModal]);
 
 	return (

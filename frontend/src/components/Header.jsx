@@ -2,7 +2,6 @@ import React from 'react';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ILogout } from '../utils/icons';
 
 const Container = styled.div`
  padding: 5px 10%;

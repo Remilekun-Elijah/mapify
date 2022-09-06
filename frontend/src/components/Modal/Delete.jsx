@@ -38,7 +38,7 @@ export default function Delete({
 				}}
 				>
 				<div className="my-5 w-full">
-					<h1 className=" py-0 font-thin text-2xl text-center leading-7">
+					<h1 className="py-0 font-thin text-center leading-7">
 						Delete {type}
 					</h1>
 				</div>
@@ -48,18 +48,17 @@ export default function Delete({
 
 				<div className="flex justify-center">
 					<Button
-						wrapperClass={"mt-10 mb-5  mr-5"}
+						wrapperClass={"mt-10 mb-5  mr-5 sm:w-[160px] w-[120px]"}
 						value={"Cancel"}
-						width={"160px"}
 						variant={"secondary"}
 						parentClass={"mr-2"}
 						onClick={(_) => setModal(!showModal)}
 					/>
 					<Button
-						wrapperClass={"mt-10 mb-5  mr-5"}
+						wrapperClass={"mt-10 mb-5  mr-5 sm:w-[160px] w-[120px]"}
 						value={modalData.disabled?"Deleting...":"Delete"}
 						disabled={modalData.disabled}
-						width={"160px"}
+						// width={"160px"}
 						type={"submit"}
 						variant={"danger"}
 					/>
