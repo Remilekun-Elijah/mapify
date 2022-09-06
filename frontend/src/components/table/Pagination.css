@@ -1,0 +1,43 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination .page-item, .pagination :where(.next-item, .prev-item){
+  margin: 0px .5em;
+  border-radius: 0.25rem;
+  padding: .2rem 0rem;
+  color: var(--C_black);
+  cursor: pointer;
+  border: .5px solid var(--C_black);
+  transition: all 0.2s ease-in-out;  
+}
+.pagination .page-item .page-link{
+ padding: 0.5rem .7rem;
+}
+
+.pagination :where(.next-item, .prev-item, .active){
+ background-color: var(--C_primary) !important;
+ color: var(--C_white) !important;
+ border-color: var(--C_primary) !important;
+}
+.pagination :where(.next-item, .prev-item){
+ padding: 0.25rem 0.3rem !important;
+ border-color: var(--C_primary) !important;
+}
+.pagination .active a{
+ cursor: default !important;
+}
+
+.pagination .page-item:hover {
+  background-color: var(--C_black);
+  color: var(--C_white);
+  border-color:  var(--C_black);
+}
+
+.pagination .disabled, .pagination .disabled a {
+ background-color: var(--C_primary_hover) !important;
+  cursor: default;
+  border-color: var(--C_primary_hover) !important;
+}

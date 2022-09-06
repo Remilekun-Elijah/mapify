@@ -19,7 +19,7 @@ const [mapData, setMapData] = React.useState([])
 				to: "/location",
 				useAlert: false
 			}).then(res=>{
-					setMapData(res.locations.map(d=>({lat: d.latitude, lng: d.longitude, addr: d.description, img: d.image})))
+					setMapData(res?.data?.locations.map(d=>({lat: d.latitude, lng: d.longitude, addr: d.description, img: d.image})))
 			}).catch(console.error);
 		}, [])
 	
@@ -28,11 +28,12 @@ const [mapData, setMapData] = React.useState([])
 		<div className="h-screen overflowX-hidden">
 			<Header />
 			<div className="flex flex-col relative justify-center md:flex-row mt-20 px-[10%]">
-				<h1 className="text-center  text-2xl ">
+				<h1 className="text-center text-lg  ms:text-2xl ">
 					Available locations are marked with <b>GPS Marker(s)</b>{" "}
 				</h1>
 				<div className=" md:absolute mt-5 md:mt-0 md:right-[10%]">
 					<button className="px-5 py-1 bg-slate-500 hover:bg-slate-900 rounded text-white" onClick={_=> navigate('/add-new-location')}>Add New</button>
+					<button className="px-3 ml-2 py-1 bg-slate-900 hover:bg-slate-700 rounded text-white" onClick={_=> navigate('/locations')}>View Locations</button>
 				</div>
 			</div>
 			<div className="flex justify-center items">

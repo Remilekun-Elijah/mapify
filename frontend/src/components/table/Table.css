@@ -1,0 +1,46 @@
+thead tr {
+ background: var(--C_white);
+ height: 50px;
+}
+
+tbody tr:nth-child(even) {
+ background: var(--C_white);
+}
+
+thead th {
+ font-style: normal;
+ font-weight: 600;
+ font-size: 14px;
+ line-height: 17px;
+ color: var(--C_black);
+ text-transform: capitalize;
+
+}
+
+.td {
+ font-style: normal;
+ font-weight: 400;
+ font-size: 14px;
+ line-height: 19px;
+ margin-top: 10px;
+ height: 60px;
+ color: var(--C_black_lite);
+}
+
+.td button {
+ height: 100%;
+ width: 100%;
+}
+
+tbody tr {
+ border-radius: 60px !important;
+}
+
+table tbody .icon {
+ font-size: 16px;
+ color: #85888c;
+}
+table tbody .icon:hover {
+ cursor: pointer;
+ color: var(--C_black);
+}

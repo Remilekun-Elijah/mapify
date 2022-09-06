@@ -3,13 +3,13 @@ import { MapContainer, Marker, Popup, TileLayer, Circle } from "react-leaflet";
 
 const Map = ({center, mapData}) => {
  return (
-  <MapContainer center={center} zoom={15} scrollWheelZoom={false}>
+  <MapContainer center={center} zoom={11} scrollWheelZoom={false}>
     <TileLayer
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
    {mapData.map((data, key)=>{
-  const {addr, img, ...position} = data;
+     const {addr, img, ...position} = data;
 
  return (
   

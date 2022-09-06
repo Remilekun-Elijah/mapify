@@ -1,0 +1,50 @@
+.modal .modal__one {
+ height: 100%;
+ background-color: white;
+ padding: 10px 20px;
+}
+
+.modal {
+ max-width: 95vw;
+ position: fixed;
+ z-index: 300;
+ background: #fff;
+}
+
+
+.modal__one .select_role {
+ background-color: #e9edff;
+}
+
+.modal__one h1 {
+ font-weight: 700;
+ line-height: 37px;
+ letter-spacing: 0em;
+ font-family: var(--F_mont);
+ font-size: 30px;
+ color: var(--C_black);
+}
+
+.modal__one input {
+ font-size: 15px;
+ padding-left: 15px;
+}
+
+.modal__one .input__two {
+ width: 100% !important;
+}
+
+.overlay{
+ position: fixed;
+ content: "";
+ top: 0;
+ bottom: 0;
+ right: 0;
+ left: 0;
+ background: rgba(0, 0, 0, 0.8);
+ width: 100%;
+ height: 100%;
+ transform: translateX(0%);
+ z-index: 200;
+ transition: transform .5s ease
+ }

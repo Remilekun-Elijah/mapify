@@ -1,13 +1,13 @@
 import React from "react";
 import { FiUploadCloud } from "react-icons/fi";
 import { Cloudinary } from "../utils/helper";
-import Input from "../components/InputOne";
+import Input from "../components/Input/InputOne";
 import styled from "styled-components";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
-import IArrowBack from "../assets/images/arrow-back.svg";
 import Alert from "../utils/alert";
 import BACKEND from "../utils/backend";
+import { IArrowBack } from "../utils/icons";
 
 const Button = styled.button``;
 const Api = new BACKEND();
@@ -71,10 +71,10 @@ export default function AddLocation() {
 							<img
 								src={IArrowBack}
 								alt="arrow back"
-								className="cursor-pointer mr-5 mt-1 hover:bg-slate-500 p-2 rounded-full"
-								onClick={(_) => navigate("/dashboard")}
+								className="cursor-pointer mr-2 sm:mr-5 mt-1 hover:bg-slate-500 p-2 rounded-full"
+								onClick={(_) => navigate(-1)}
 							/>{" "}
-							<strong className="text-2xl">Add New Location</strong>
+							<strong className="text-lg sm:text-2xl">Add New Location</strong>
 						</div>
 
 						<div>
@@ -100,9 +100,9 @@ export default function AddLocation() {
 									)}
 								</div>
 							</div>
-							<h1 className="mb-10  pt-3  text-center text-md">
+							<h2 className="mb-10 text-xl  pt-3  text-center text-md">
 								Location Image
-							</h1>
+							</h2>
 
 <label htmlFor="description" className="block text-sm font-bold mb-2 input-label">Description <span
 								style={{ top: "2px", color: "red" }}
@@ -110,7 +110,7 @@ export default function AddLocation() {
 								*
 							</span></label>
 							<textarea
-							className="w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none outline-none"
+							className="w-full py-3 px-3 text-gray-700 leading-tight shadow focus:outline-none focus:shadow-outline resize-none outline-none"
 							rows={3}
 							id="description"
 								value={formData.description}
@@ -118,8 +118,6 @@ export default function AddLocation() {
 								label={"Description"}
 								placeholder={" "}
 								minLength={3}
-								labelClass={" "}
-								inputClass={"shadow"}
 								onChange={addData}
 								required={true}
 							/>
@@ -131,7 +129,6 @@ export default function AddLocation() {
 								minLength={2}
 								type={"number"}
 								placeholder={" "}
-								labelClass={" "}
 								wrapperClass={"input__two"}
 								inputClass={"shadow"}
 								required={true}

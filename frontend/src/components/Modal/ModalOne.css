@@ -1,0 +1,13 @@
+.modal__wrapper {
+ margin: 18vh 30vw;
+ min-width: 700px;
+ height: 400px;
+ position: fixed;
+ top: 20px;
+ z-index: 300;
+}
+
+.modal__one .select_role {
+ background-color: #e9edff;
+ height: 43px;
+}

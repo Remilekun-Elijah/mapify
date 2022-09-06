@@ -1,4 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+:root {
+  --C_primary: #333;
+  --C_black: #333;
+  --C_primary_disabled: rgb(100 116 139);
+  --C_white: #fff;
+  --C_primary_hover: gray;
+  --C_bg_danger: rgba(255, 36, 20, 0.1);
+  --C_danger: #FF2414;
+  --C_border_danger: #E25353;
+  --C_black_lite: #000;
+}
 * {
   box-sizing: border-box;
   margin: 0;

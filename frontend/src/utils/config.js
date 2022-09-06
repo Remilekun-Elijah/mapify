@@ -1,7 +1,6 @@
 const environment = {}; 
 environment.development = {
  backendUrl: "http://localhost:9000",
- // "backendUrl": "https://api-mapify.onrender.com",
 cloudinary_cloudName:"remilekunelijah",
  cloudinary_preset: "ixp9w0hy",
  cloudinary_folder: "Mapify"
@@ -9,7 +8,6 @@ cloudinary_cloudName:"remilekunelijah",
 
 environment.production = {
  backendUrl: "https://api-mapify.onrender.com",
- 
  cloudinary_cloudName:"remilekunelijah",
  cloudinary_preset: "ixp9w0hy",
  cloudinary_folder: "Mapify"

@@ -5,6 +5,7 @@ const {
 const joi = require('joi')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const fs = require('fs')
 
 const locationSchema = joi.object({
   description: joi.string().required(),
@@ -63,20 +64,57 @@ exports.LocationController = class LocationController {
   }
 
   static async getAll(req, res, next) {
-
     try {
-      const locations = await Location.find();
+
+      let { page, pageSize } = req.query;
+      page = parseInt(page) || 1
+      pageSize = parseInt(pageSize) || 10;
+
+      const filter = {
+        limit: pageSize,
+        skip: Math.round((page - 1) * pageSize),
+      }
+      
+      const total = await Location.countDocuments(filter)
+      const locations = await Location.find().skip(filter.skip).limit(filter.limit).sort({createdAt: -1});
+      
       res.status(200).json({
         success: true,
         message: "Locations retrieved successfully",
-        locations
+        data: {locations, page, pageSize, total}
       })
+     
     } catch (err) {
       console.error(err);
       res.status(500).json({
         success: false,
         message: "Failed to retrieve locations, please reload the page"
       })
+    }
+  }
+
+  static async deleteOne(req, res, next) {
+    try {
+      const deleted = await Location.findByIdAndDelete(req.params.id, {new: true})
+      if(deleted) res.status(200).json({success: true, data: deleted, message: "Location deleted successfully"})
+      else res.status(500).json({success: false, message: "Failed to delete location, please try again"});
+    } catch(error) {
+      res.status(500).json({success: false, message: "Failed to delete location, please try again", error});
+    }
+  }
+
+  static async deleteBulk(req, res, next) {
+    try {
+      let count=[];
+      for(let id of  req.body.locationIds){
+         let  data = await Location.findByIdAndDelete(id)
+         if(data) count.push(data._id)
+      }
+      if(count.length) res.status(200).json({success: true, data: count.length, message: "Locations deleted successfully"})
+      else res.status(500).json({success: false, message: "Failed to delete locations, please try again"});
+    } catch(error) {
+      console.log(error);
+      res.status(500).json({success: false, message: "Failed to delete locations, please try again", error});
     }
   }
 
