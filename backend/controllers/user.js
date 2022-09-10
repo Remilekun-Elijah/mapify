@@ -68,7 +68,7 @@ exports.LocationController = class LocationController {
 
       let { page, pageSize } = req.query;
       page = parseInt(page) || 1
-      pageSize = parseInt(pageSize) || 10;
+      pageSize = parseInt(pageSize) || Infinity;
 
       const filter = {
         limit: pageSize,
