@@ -8,8 +8,8 @@ const Api = new BACKEND();
 
 const videoConstraints = {
  width: 1280,
- height: 3020,
- facingMode: "user"
+ height: 5020,
+ facingMode: { exact: "environment" }
 };
 
 const WEBCAM = ({showModal, setModal, locationId, fetchLocation}) => {
@@ -27,32 +27,40 @@ const uploadImage = base64 => {
  }).catch(console.error);
 }
 
+const [url, setUrl] = React.useState('')
+const [loading, setLoading] = React.useState(false);
+
+const handleCapture = async ({getScreenshot}) => {
+  const imageSrc = getScreenshot().split("data:image/jpeg;base64,")[1]
+  console.log(imageSrc);
+  setUrl(getScreenshot())
+  setLoading(true)
+  await uploadImage(imageSrc)
+}
  return (
   <ModalOne {...{width: "100%", height: "70vh", showModal, setModal}}>
    <h2 className='mb-5 text-2xl'>Capture A Location</h2>
   <Webcam
     audio={false}
-    height={1020}
+    height={5020}
     screenshotFormat="image/jpeg"
     width={1280}
+    mirrored={false}
     videoConstraints={videoConstraints}
-  >
-    {({ getScreenshot }) => (
+    onUserMedia={e => console.log(e)}
+   />
+    {/* {({ getScreenshot }) => ( */}
       <Button
       {...{
-       value: "Capture Photo",
+       value: loading ? "Capturing..." : "Capture Photo",
+       disabled: loading,
        width: "200px",
        wrapperClass: "my-5",
-        onClick: async () => {
-          const imageSrc = getScreenshot().split("data:image/jpeg;base64,")[1]
-          console.log(imageSrc);
-          await uploadImage(imageSrc)
-        }
-      
+        onClick: handleCapture
       }}
       />
-    )}
-  </Webcam>
+    {/* )} */}
+  {/* </Webcam> */}
  
   </ModalOne>
  );

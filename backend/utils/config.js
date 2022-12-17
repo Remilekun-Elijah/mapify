@@ -1,9 +1,9 @@
 if(require('express')().get("env") === 'development') require("dotenv/config")
 const environment = {};
-console.log(require('express')().get("env"));
+
 environment.staging = {
  mongodbUrl: process.env.STAGING_DB_URL,
- port: process.env.PORT
+ port: process.env.PORT || 9000
 }
 
 environment.development = {

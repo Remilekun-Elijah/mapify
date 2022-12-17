@@ -1,6 +1,6 @@
 const environment = {}; 
 environment.development = {
- backendUrl: "http://localhost:9000",
+ backendUrl: "http://192.168.100.90:9000",
 cloudinary_cloudName:"remilekunelijah",
  cloudinary_preset: "ixp9w0hy",
  cloudinary_folder: "Mapify"
