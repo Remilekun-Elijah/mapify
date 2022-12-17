@@ -1,9 +1,9 @@
 import React from 'react';
 import './Loader.css';
 
-const Loader = () => {
+const Loader = ({className}) => {
     return (
-        <div className="sk-fading-circle">
+        <div className={`sk-fading-circle ${className}`}>
             <div className="sk-circle1 sk-circle"></div>
             <div className="sk-circle2 sk-circle"></div>
             <div className="sk-circle3 sk-circle"></div>

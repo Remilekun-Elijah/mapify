@@ -10,18 +10,19 @@ const Api = new BACKEND();
 
 
 const WEBCAM = ({showModal, setModal, locationId, fetchLocation}) => {
-const uploadImage = (base64, cb) => {
+const uploadImage = base64 => {
  Api.send({
   type: "put",
   to: `/location/image/${locationId}`,
   useAlert: true,
   payload: {base64}
  }).then(res=>{
-  cb?.()
+  setUrl("")
+  setLoading(false)
    if(res.success) {
     fetchLocation()
     setModal(false)
-   }
+   } 
    return res
  }).catch(console.error);
 }
@@ -32,8 +33,8 @@ const [loading, setLoading] = React.useState(false);
 const [view, toggleView] = React.useState(true);
 
 const videoConstraints = {
-  width: '100%',
-  height: "100%",
+  width: 700,
+  height: 720,
   facingMode: view ? { exact: "environment" } : "user"
  };
 
@@ -42,29 +43,32 @@ const handleCapture = async (getScreenshot) => {
   
   setUrl(getScreenshot())
   setLoading(true)
-  await uploadImage(imageSrc, _=> setLoading(false))
+  await uploadImage(imageSrc)
 }
  return (
-  <ModalOne {...{width: window.innerWidth > 992 ? "80%" : "90%", height: "70vh", showModal, setModal}}>
-   <div className="mb-5 flex justify-center relative items-center">
+  <ModalOne {...{width: window.innerWidth > 992 ? "80%" : "95%", height: "70vh", showModal, setModal}}>
+   <div className="mb-5 flex justify-center items-center">
    <h2 className='text-2xl mr-10'>Capture A Location</h2>
 
   <TbCameraRotate className='cursor-pointer' size='24' onClick={_=> toggleView(state => !state)}/>
    </div>
+   { !camData && <div className="flex justify-center flex-wrap"><p className='text-center flex mt-20'>Click <TbCameraRotate className='mx-1' size='24' /> or grant site permission to use your camera</p></div>}
+  { !url ? 
+  //  <div>
   <Webcam
     audio={false}
-    height={"100%"}
+    width={videoConstraints.width}
+    height={videoConstraints.height}
     screenshotFormat="image/jpeg"
-    width={"100%"}
-    style={{height: "80%"}}
-    mirrored={true}
+    style={{height: "60%", width: "100vw", }}
+    mirrored={false}
     videoConstraints={videoConstraints}
     forceScreenshotSourceSize={true}
     onUserMedia={e => setCamData(e)}
    >
     {({ getScreenshot }) => (
       <>
-        {camData ?<div className='flex justify-center'>
+        {camData && <div className='flex justify-center'>
      <Button
       {...{
        value: loading ? "Capturing..." : "Capture Photo",
@@ -74,13 +78,27 @@ const handleCapture = async (getScreenshot) => {
         onClick: _=> handleCapture(getScreenshot)
       }}
       /> 
-       
-      {/* <p></p> */}
-      </div> : <p className='absolute top-[40%] text-center left-[35%] flex'>Click the <TbCameraRotate className='mx-1' size='24' />  icon or grant site permission to use your camera</p>}
+      </div> }
       </>
     )}
     </Webcam> 
- 
+    : <div className='flex justify-center'>
+      <div className="">
+      <img src={url} alt="" />
+      <div className='flex justify-center'>
+      <Button
+      {...{
+       value: loading ? "Capturing..." : "Capture Photo",
+       disabled: loading,
+       width: "200px",
+       wrapperClass: "my-5"
+      }}
+      />
+      </div>
+      </div> 
+      </div>
+//  </div>
+}
   </ModalOne>
  );
 }

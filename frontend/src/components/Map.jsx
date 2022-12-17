@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapContainer, Marker, Popup, TileLayer,  } from "react-leaflet";
 import { Link } from 'react-router-dom';
+import Loader from "./Loader/Loader"
 
 const Map = ({center, mapData, setModal, setLocationId}) => {
  return (
@@ -14,8 +15,8 @@ const Map = ({center, mapData, setModal, setLocationId}) => {
 
  return (
   
- <Marker {...{ key, position: {lat: latitude, lng: longitude} }} >
-
+ <Marker {...{ key, position: {lat: latitude, lng: longitude} }}>
+{/* <div className='relative border-3'> */}
       <Popup>
         {<div className="flex flex-col">
         <span>{description}</span>
@@ -30,6 +31,9 @@ const Map = ({center, mapData, setModal, setLocationId}) => {
           </div>
          </div>}
       </Popup>
+
+      <Loader className={'absolute top-[40%] bottom-10 left-5 right-5'}/>
+      {/* </div> */}
     </Marker>
  )
  })
