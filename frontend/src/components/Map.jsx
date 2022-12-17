@@ -16,7 +16,7 @@ const Map = ({center, mapData, setModal, setLocationId}) => {
  return (
   
  <Marker {...{ key, position: {lat: latitude, lng: longitude} }}>
-{/* <div className='relative border-3'> */}
+
       <Popup>
         {<div className="flex flex-col">
         <span>{description}</span>
@@ -27,13 +27,11 @@ const Map = ({center, mapData, setModal, setLocationId}) => {
             setModal(true)
           }}>Upload Image</span>}
 
-          <Link className="text-end" to={`/locations/${data._id}`} state={data}>View Details </Link>
+          <Link className="text-end ml-3" to={`/locations/${data._id}`} state={data}>View Details </Link>
           </div>
          </div>}
       </Popup>
 
-      <Loader className={'absolute top-[40%] bottom-10 left-5 right-5'}/>
-      {/* </div> */}
     </Marker>
  )
  })

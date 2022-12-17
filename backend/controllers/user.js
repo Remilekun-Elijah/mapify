@@ -145,7 +145,7 @@ Jimp.read(buffer, async (err, resp) => {
     resp.quality(60).write(filepath)
 
     Location.findByIdAndUpdate(id, {$set: {image}}, {new: true}).then(doc => {
-      if(doc) return res.status(201).json({success: false, data: image, message: "Image captured successfully"})
+      if(doc) return res.status(201).json({success: true, data: image, message: "Image captured successfully"})
       else return res.status(500).json({success: false, data: null, message: "Failed to capture image"})
     }).catch(err => {
       console.error(err);
