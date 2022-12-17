@@ -30,7 +30,7 @@ const uploadImage = base64 => {
 const [url, setUrl] = React.useState('')
 const [loading, setLoading] = React.useState(false);
 
-const handleCapture = async ({getScreenshot}) => {
+const handleCapture = async (getScreenshot) => {
   const imageSrc = getScreenshot().split("data:image/jpeg;base64,")[1]
   console.log(imageSrc);
   setUrl(getScreenshot())
@@ -48,19 +48,22 @@ const handleCapture = async ({getScreenshot}) => {
     mirrored={false}
     videoConstraints={videoConstraints}
     onUserMedia={e => console.log(e)}
-   />
-    {/* {({ getScreenshot }) => ( */}
+   >
+    {({ getScreenshot }) => (
+      <>
       <Button
       {...{
        value: loading ? "Capturing..." : "Capture Photo",
        disabled: loading,
        width: "200px",
        wrapperClass: "my-5",
-        onClick: handleCapture
+        onClick: _=> handleCapture(getScreenshot)
       }}
       />
-    {/* )} */}
-  {/* </Webcam> */}
+      <p>{url}</p>
+      </>
+    )}
+    </Webcam> 
  
   </ModalOne>
  );
