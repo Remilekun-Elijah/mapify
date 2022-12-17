@@ -50,7 +50,7 @@ export default function LocationDetails() {
 										<MdOutlineLocationCity title="Address" size="24" color="green" />{" "}
 										<p className="ml-2 text-gray-600">Address</p>
 									</td>
-									<td>{state.address}</td>
+									<td>{state.address || "N/A"}</td>
 								</tr>
 
 								<tr className="invisible">
@@ -62,7 +62,7 @@ export default function LocationDetails() {
 										<RiGovernmentFill size="24" color="green" />{" "}
 										<p className="ml-2 text-gray-600">LGA</p>
 									</td>
-									<td>{state.lga}</td>
+									<td>{state.lga || "N/A"}</td>
 								</tr>
 
 								<tr className="invisible">
@@ -89,7 +89,7 @@ export default function LocationDetails() {
 										<p className="ml-2 text-gray-600">Polling Unit No.</p>
 									</td>
 
-									<td>{state.pollingUnit}</td>
+									<td>{state.pollingUnit || "N/A"}</td>
 								</tr>
 
 								<tr className="invisible">
@@ -101,7 +101,7 @@ export default function LocationDetails() {
 										<FaUserAlt size="24" color="green" />{" "}
 										<p className="ml-2 text-gray-600"> Agent Party Name</p>
 									</td>
-									<td>{state.agentParty}</td>
+									<td>{state.agentParty || "N/A"}</td>
 								</tr>
 
 								<tr className="invisible">
@@ -113,7 +113,7 @@ export default function LocationDetails() {
 										<FaMobile size="24" color="green" />{" "}
 										<p className="ml-2 text-gray-600">Agent Tel. Number</p>
 									</td>
-									<td>{state.phoneNumber}</td>
+									<td>{state.phoneNumber || "N/A"}</td>
 								</tr>
 							</tbody>
 						</table>

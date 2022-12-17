@@ -83,11 +83,11 @@ const ViewLocation = () => {
 							return data?{
 								image,
 								"Coordinates": `${latitude}, ${longitude}`,
-								"Address": address,
-								"LGA": lga,
-								"PU No.": pollingUnit,
-								"Party Agent": agentParty,
-								"Party Agent No.": phoneNumber,
+								"Address": address || "N/A",
+								"LGA": lga || "N/A",
+								"PU No.": pollingUnit || "N/A",
+								"Party Agent": agentParty || "N/A",
+								"Party Agent No.": phoneNumber || "N/A",
 								...rest,
 							}:{};
 						}),
