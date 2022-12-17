@@ -49,8 +49,7 @@ let fetchLocation = _=> Api.send({
 							name,
 							value: name==='LGA' ? "" : capitalize(name) })),
 						value: lga,
-						wrapperClass: "bg-white mt-",
-						selectClass: "bg-white shadow-md py-1",
+						selectClass: "bg-[#eee] shadow-md py-1",
 						name: "lga",
 						onChange: ({target: {value}})=> setLga(value)
 					}}

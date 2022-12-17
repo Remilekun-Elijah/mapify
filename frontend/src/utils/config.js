@@ -19,4 +19,5 @@ environment.production = {
  cloudinary_preset: "ixp9w0hy",
  cloudinary_folder: "Mapify"
 }
-export default environment[process.env.NODE_ENV]
+
+export default environment[process.env.REACT_APP_NODE_ENV]
