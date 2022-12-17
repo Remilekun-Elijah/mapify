@@ -75,10 +75,10 @@ const ViewLocation = () => {
 			useAlert: false,
 		})
 			.then((res) => {
-				if (res.success) {
+				if (res?.success) {
 					const { pageSize, total, locations } = res?.data;
 					setLocations(
-						locations.map((data) => {
+						locations?.map((data) => {
 							const { description, longitude, latitude, image, address, pollingUnit, phoneNumber, createdAt, agentParty,  updatedAt, lga, ...rest } = data;
 							return data?{
 								image,

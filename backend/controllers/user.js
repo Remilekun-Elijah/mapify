@@ -95,7 +95,7 @@ exports.LocationController = class LocationController {
       console.error(err);
       res.status(500).json({
         success: false,
-        message: "Failed to retrieve locations, please reload the page"
+        message: "Failed to retrieve locations"
       })
     }
   }
@@ -128,8 +128,6 @@ exports.LocationController = class LocationController {
   static async uploadImage (req, res, next) {
     const {base64} = req.body,
      {id} = req.params;
-    
-    console.log(__dirname);
 
 const buffer = Buffer.from(base64, "base64");
 
@@ -142,15 +140,16 @@ Jimp.read(buffer, async (err, resp) => {
     
     const filepath = "uploads/"+Date.now()+"-location-image.jpg";
 
-    let image = process.env.NODE_ENV !== 'production' ? `${req.protocol}://${req.hostname}:9000/${filepath}` : `${req.protocol}://${req.hostname}/${filepath}`
+    let image = process.env.NODE_ENV === 'development' ? `${req.protocol}://${req.hostname}:9000/${filepath}` : `${req.protocol}://${req.hostname}/${filepath}`
 
     resp.quality(60).write(filepath)
 
     Location.findByIdAndUpdate(id, {$set: {image}}, {new: true}).then(doc => {
-      if(doc) res.status(201).json({success: true, data: image, message: "Image captured successfully"})
-      else res.status(500).json({success: false, data: null, message: "Failed to capture image"})
+      if(doc) return res.status(201).json({success: true, data: image, message: "Image captured successfully"})
+      else return res.status(500).json({success: false, data: null, message: "Failed to capture image"})
     }).catch(err => {
-      res.status(500).json({success: false, data: err, message: "Something went wrong"})
+      console.error(err);
+      return res.status(500).json({success: false, data: err, message: "Something went wrong"})
     })
 
   }

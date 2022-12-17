@@ -1,24 +1,17 @@
 const express  = require('express');
 const mongoose = require("mongoose")
 const app = express();
-const path = require("path")
-let mongoDB_Uri;
-if(app.get("env")==='development'){
- require("dotenv/config")
-mongoDB_Uri = process.env.LOCAL_DB_URL
-}  else mongoDB_Uri = process.env.DB_URL
+if(app.get("env") === 'development') require("dotenv/config")
 
-mongoose.connect(mongoDB_Uri, (error)=> {
+mongoose.connect(config.mongodbUrl, (error)=> {
  if(error) console.error(error)
  else console.log("Database Connected")
 })
 const routes = require('./routes')
-const cors = require("cors")
+const cors = require("cors");
+const config = require('./utils/config');
 
 require("./utils/loadMigration")
-
-
-const port = process.env.PORT||9000;
 
 app.get("/", (req, res)=> {
  res.status(200).json({
@@ -36,4 +29,4 @@ app.use(express.static(__dirname))
 
 app.use(routes)
 
-app.listen(port, e => console.log('App running on port '+port))
+app.listen(config.port, e => console.log('App running on port '+port))
