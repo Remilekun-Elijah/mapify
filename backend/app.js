@@ -1,15 +1,15 @@
 const express  = require('express');
 const mongoose = require("mongoose")
+const config = require('./utils/config');
 const app = express();
-if(app.get("env") === 'development') require("dotenv/config")
 
-mongoose.connect(config.mongodbUrl, (error)=> {
+console.log(config?.mongodbUrl);
+mongoose.connect(config?.mongodbUrl, (error)=> {
  if(error) console.error(error)
  else console.log("Database Connected")
 })
 const routes = require('./routes')
 const cors = require("cors");
-const config = require('./utils/config');
 
 require("./utils/loadMigration")
 
@@ -29,4 +29,4 @@ app.use(express.static(__dirname))
 
 app.use(routes)
 
-app.listen(config.port, e => console.log('App running on port '+port))
+app.listen(config.port, e => console.log('App running on port '+config.port))

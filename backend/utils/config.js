@@ -1,3 +1,4 @@
+if(require('express')().get("env") === 'development') require("dotenv/config")
 const environment = {};
 
 environment.staging = {
