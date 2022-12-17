@@ -42,8 +42,6 @@ export class Cloudinary {
 	}
 }
 
-
-
 export const capitalize = (string) => {
   const final = string
   ?.replace(/\w\S*/g, (txt) => {
@@ -52,3 +50,31 @@ export const capitalize = (string) => {
   })
   return final;
 }
+
+export const handleSearch = ({value, useCaps, cb}) => {
+  const branch = useCaps ? capitalize(value) : value;
+  cb(branch.trim());
+};
+
+export const lgas = [
+  "Agege",
+  "Alimosho",
+  "Apapa",
+  "Ifako-Ijaye",
+  "Ikeja",
+  "Kosofe",
+  "Mushin",
+  "Oshodi-Isolo",
+  "Shomolu",
+  "Eti-Osa",
+  "Lagos Island",
+  "Lagos Mainland",
+  "Surulere",
+  "Ojo",
+  "Ajeromi-Ifelodun",
+  "Amuwo-Odofin",
+  "Badagry",
+  "Ikorodu",
+  "Ibeju-Lekki",
+  "Epe"
+]

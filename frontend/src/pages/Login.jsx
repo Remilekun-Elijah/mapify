@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Alert from "../utils/alert";
 import BACKEND from "../utils/backend";
 import Storage from "../utils/storage";
+import Footer from "../components/Footer";
 
 const backend = new BACKEND();
 
@@ -70,9 +71,7 @@ const Login = () => {
 					</button>
 				</form>
 			</div>
-			<footer className="text-center py-2 mt-[-80px]">
-				&copy; Copyright 2022. Some rights reserved.
-			</footer>
+			<Footer />
 		</div>
 	);
 };

@@ -6,12 +6,18 @@ const joi = require('joi')
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const fs = require('fs')
+const Jimp = require("jimp")
 
 const locationSchema = joi.object({
   description: joi.string().required(),
   longitude: joi.number().required(),
   latitude: joi.number().required(),
-  image: joi.string().required()
+  image: joi.string().allow(""),
+  address: joi.string().required(),
+  pollingUnit: joi.number().required(),
+  agentParty: joi.string().required(),
+  phoneNumber: joi.string().required(),
+  lga: joi.string().required()
 })
 
 const loginSchema = joi.object({
@@ -66,17 +72,18 @@ exports.LocationController = class LocationController {
   static async getAll(req, res, next) {
     try {
 
-      let { page, pageSize } = req.query;
+      let { page, pageSize, lga } = req.query;
       page = parseInt(page) || 1
-      pageSize = parseInt(pageSize) || Infinity;
+      pageSize = parseInt(pageSize) || 1e10;
 
       const filter = {
         limit: pageSize,
-        skip: Math.round((page - 1) * pageSize),
+        skip: Math.round((page - 1) * pageSize)
       }
+      if(lga) filter.lga = lga
       
       const total = await Location.countDocuments(filter)
-      const locations = await Location.find().skip(filter.skip).limit(filter.limit).sort({createdAt: -1});
+      const locations = await Location.find(lga?{lga}: {}).skip(filter.skip).limit(filter.limit).sort({createdAt: -1});
       
       res.status(200).json({
         success: true,
@@ -118,6 +125,37 @@ exports.LocationController = class LocationController {
     }
   }
 
+  static async uploadImage (req, res, next) {
+    const {base64} = req.body,
+     {id} = req.params;
+    
+    console.log(__dirname);
+
+const buffer = Buffer.from(base64, "base64");
+
+Jimp.read(buffer, async (err, resp) => {
+  if(err) {
+    console.error(err);
+    return res.status(500).json({success: false, data: null, message: "Failed to capture image"})
+  }
+  else {
+    
+    const filepath = "uploads/"+Date.now()+"-location-image.jpg";
+
+    let image = process.env.NODE_ENV !== 'production' ? `${req.protocol}://${req.hostname}:9000/${filepath}` : `${req.protocol}://${req.hostname}/${filepath}`
+
+    resp.quality(60).write(filepath)
+
+    Location.findByIdAndUpdate(id, {$set: {image}}, {new: true}).then(doc => {
+      if(doc) res.status(201).json({success: true, data: image, message: "Image captured successfully"})
+      else res.status(500).json({success: false, data: null, message: "Failed to capture image"})
+    }).catch(err => {
+      res.status(500).json({success: false, data: err, message: "Something went wrong"})
+    })
+
+  }
+})
+  }
 }
 
 exports.UserController = class UserController {

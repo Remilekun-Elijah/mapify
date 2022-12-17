@@ -7,6 +7,7 @@ import ViewLocation from './pages/ViewLocation';
 import { INotFound } from './utils/icons';
 import Button from './components/Button';
 import PrivateRoutes from './utils/PrivateRoutes';
+import LocationDetails from './pages/LocationDetails';
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/add-new-location' element={<AddLocation />} />
         <Route path='/locations' element={<ViewLocation />} />
+        <Route path="/locations/:locationId" element={<LocationDetails />} />
       </Route>
 
       <Route path='*' element={

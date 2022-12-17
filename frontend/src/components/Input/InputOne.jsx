@@ -34,7 +34,7 @@ const Input = ({
 			<div className={`flex justify-between mt-y relative`}>
 				{label && (
 					<label
-						className={`block text-sm font-bold mb-2 input-label ${labelClass}`}
+						className={`block z-0 text-sm font-bold mb-2 input-label ${labelClass}`}
 						htmlFor={id || name}>
 						{label}{" "}
 						{!disabled && required && (

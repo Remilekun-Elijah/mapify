@@ -1,9 +1,14 @@
 const express  = require('express');
 const mongoose = require("mongoose")
 const app = express();
-if(app.get("env")==='development') require("dotenv/config")
+const path = require("path")
+let mongoDB_Uri;
+if(app.get("env")==='development'){
+ require("dotenv/config")
+mongoDB_Uri = process.env.LOCAL_DB_URL
+}  else mongoDB_Uri = process.env.DB_URL
 
-mongoose.connect(process.env.DB_URL, (error)=> {
+mongoose.connect(mongoDB_Uri, (error)=> {
  if(error) console.error(error)
  else console.log("Database Connected")
 })
@@ -23,9 +28,11 @@ app.get("/", (req, res)=> {
  })
 })
 
-app.use(express.json({limit: '24kb'}));
-app.use(express.urlencoded({extended: false, limit: '24kb'}))
+app.use(express.json({limit: '5mb'}));
+app.use(express.urlencoded({extended: false, limit: '50kb'}))
 app.use(cors("*"));
+
+app.use(express.static(__dirname))
 
 app.use(routes)
 

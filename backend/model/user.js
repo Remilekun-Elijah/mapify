@@ -23,7 +23,12 @@ const locationSchema = new Schema({
  description: String,
  longitude: Number,
  latitude: Number,
- image: String
+ image: String,
+ address: String,
+ pollingUnit: String,
+ agentParty: String,
+ phoneNumber: String,
+ lga: String
 }, {
  timestamps: true
 })

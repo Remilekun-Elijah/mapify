@@ -1,6 +1,5 @@
 import React from "react";
-import { FiUploadCloud } from "react-icons/fi";
-import { Cloudinary } from "../utils/helper";
+import { capitalize, lgas } from "../utils/helper";
 import Input from "../components/Input/InputOne";
 import styled from "styled-components";
 import Header from "../components/Header";
@@ -8,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import Alert from "../utils/alert";
 import BACKEND from "../utils/backend";
 import { IArrowBack } from "../utils/icons";
+import SelectTwo from "../components/Select/SelectTwo";
+import Footer from "../components/Footer";
 
 const Button = styled.button``;
 const Api = new BACKEND();
@@ -18,48 +19,45 @@ export default function AddLocation() {
 		latitude: 0,
 		longitude: 0,
 		image: "",
+		address: "",
+		pollingUnit: "",
+		agentParty: "",
+		phoneNumber: "",
+		lga: "",
 	};
 	const navigate = useNavigate();
 	const [formData, setFormData] = React.useState(values),
 		[isSubmitting, setSubmit] = React.useState(false);
 
-	const addData = ({ target }) => {
-		const name = target.getAttribute("name");
-		if (name in values) {
-			setFormData((state) => ({ ...state, [name]: target.value }));
-		} else alert(name + " not in form data");
+	const addData = ({ target: { name, value } }) => {
+		setFormData((state) => ({ ...state, [name]: value }));
 	};
 
 	const handleSubmit = async (e) => {
-			e.preventDefault();
-			setSubmit(true);
-			try {
-				const res = await Api.send({
-					type: "post",
-					to: "/location",
-					payload: formData,
-				});
+		e.preventDefault();
+		setSubmit(true);
+		try {
+			const res = await Api.send({
+				type: "post",
+				to: "/location",
+				payload: formData,
+			});
 
-				console.log(res);
-
-				if (res?.success) {
-					Alert({ type: "success", message: res?.message });
-					navigate("/dashboard");
-					setSubmit(false);
-				} else {
-					setSubmit(false);
-				}
-			} catch (err) {
+			if (res?.success) {
+				Alert({ type: "success", message: res?.message });
+				navigate("/dashboard");
 				setSubmit(false);
-				console.error(err);
+			} else {
+				setSubmit(false);
 			}
-		},
-		handleImageUpload = (data) => {
-			setFormData((state) => ({ ...state, image: data.url }));
-		};
+		} catch (err) {
+			setSubmit(false);
+			console.error(err);
+		}
+	};
 
 	return (
-		<div className="w-full h-screen ">
+		<div className="w-full h-screen">
 			<Header />
 
 			<div className=" flex justify-center px-[10%] mt-20">
@@ -78,50 +76,6 @@ export default function AddLocation() {
 						</div>
 
 						<div>
-							<div
-								className="h-64 w-full flex mt-20 justify-center items-center rounded"
-								style={{
-									background: formData.image ? "" : "rgba(0,0,0, .3) center ",
-								}}>
-								<div
-									className="cursor-pointer"
-									onClick={() => new Cloudinary().upload(handleImageUpload)}>
-									{formData.image ? (
-										<img alt="" src={formData.image} className="h-64 w-full" />
-									) : (
-										<div className="relative w-40 h-[7em]  text-base  text-feint rounded flex-col items-center	justify-center">
-											<div className="flex items-center justify-center mt-5">
-												<FiUploadCloud size={40} className="text-slate-500" />
-											</div>
-											<p className="underline underline-offset-4 text-center text-slate-500">
-												Select Image
-											</p>
-										</div>
-									)}
-								</div>
-							</div>
-							<h2 className="mb-10 text-xl  pt-3  text-center text-md">
-								Location Image
-							</h2>
-
-<label htmlFor="description" className="block text-sm font-bold mb-2 input-label">Description <span
-								style={{ top: "2px", color: "red" }}
-								className="relative">
-								*
-							</span></label>
-							<textarea
-							className="w-full py-3 px-3 text-gray-700 leading-tight shadow focus:outline-none focus:shadow-outline resize-none outline-none"
-							rows={3}
-							id="description"
-								value={formData.description}
-								name={"description"}
-								label={"Description"}
-								placeholder={" "}
-								minLength={3}
-								onChange={addData}
-								required={true}
-							/>
-
 							<Input
 								value={formData.latitude}
 								name={"latitude"}
@@ -148,6 +102,101 @@ export default function AddLocation() {
 								required={true}
 								onChange={addData}
 							/>
+
+							<SelectTwo
+								{...{
+									value: formData.lga,
+									name: "lga",
+									placeholder: "",
+									label: "Local Government Area (LGA)",
+									options: lgas.map((name) => ({
+										name,
+										value: capitalize(name),
+									})),
+									required: true,
+									wrapperClass: "mt-5 input__two",
+									onChange: (_, { value }) =>
+										setFormData((state) => ({ ...state, lga: value })),
+								}}
+							/>
+
+							<Input
+								value={formData.address}
+								name={"address"}
+								label={"Address"}
+								minLength={2}
+								type={"text"}
+								placeholder={" "}
+								wrapperClass={"mt-5 input__two z-0"}
+								inputClass={"shadow"}
+								required={true}
+								onChange={addData}
+							/>
+
+							<Input
+								value={formData.pollingUnit}
+								name={"pollingUnit"}
+								label={"Polling Unit No. (PU)"}
+								minLength={1}
+								type={"number"}
+								labelClass={"z-0"}
+								placeholder={" "}
+								wrapperClass={"mt-5 input__two z-0"}
+								inputClass={"shadow"}
+								required={true}
+								onChange={addData}
+							/>
+
+							<Input
+								value={formData.agentParty}
+								name={"agentParty"}
+								label={"Name of Agent Party"}
+								minLength={1}
+								type={"text"}
+								placeholder={" "}
+								wrapperClass={"mt-5 input__two"}
+								inputClass={"shadow"}
+								required={true}
+								onChange={addData}
+							/>
+
+							<Input
+								value={formData.phoneNumber}
+								name={"phoneNumber"}
+								label={"Agent Tel. Number"}
+								minLength={1}
+								type={"tel"}
+								placeholder={" "}
+								wrapperClass={"mt-5 input__two"}
+								inputClass={"shadow"}
+								required={true}
+								onChange={addData}
+							/>
+
+							<div className="mt-5">
+								<label
+									htmlFor="description"
+									className="block text-sm font-bold mb-2 input-label">
+									Description{" "}
+									<span
+										style={{ top: "2px", color: "red" }}
+										className="relative">
+										*
+									</span>
+								</label>
+								<textarea
+									className="w-full py-3 px-3 text-gray-700 leading-tight shadow focus:outline-none focus:shadow-outline resize-none outline-none"
+									rows={3}
+									id="description"
+									value={formData.description}
+									name={"description"}
+									label={"Description"}
+									placeholder={" "}
+									minLength={3}
+									onChange={addData}
+									required={true}
+								/>
+							</div>
 						</div>
 
 						<div className="flex mx-auto justify-center  my-10 w-full">
@@ -163,9 +212,7 @@ export default function AddLocation() {
 				</form>
 			</div>
 
-			<footer className="text-center py-2 mt-[-50px]">
-				&copy; Copyright 2022. Some rights reserved.
-			</footer>
+			<Footer />
 		</div>
 	);
 }

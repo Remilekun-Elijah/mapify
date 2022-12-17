@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Header from "../components/Header";
 import Delete from "../components/Modal/Delete";
 import Table from "../components/table/Table";
 import Alert from "../utils/alert";
 import BACKEND from "../utils/backend";
-import dayjs from "dayjs";
+
 import { IArrowBack, IEmpty } from "../utils/icons";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/Footer";
 
 
 
@@ -77,11 +79,16 @@ const ViewLocation = () => {
 					const { pageSize, total, locations } = res?.data;
 					setLocations(
 						locations.map((data) => {
-							const { description, image, createdAt, updatedAt, ...rest } = data;
+							const { description, longitude, latitude, image, address, pollingUnit, phoneNumber, createdAt, agentParty,  updatedAt, lga, ...rest } = data;
 							return data?{
 								image,
+								"Coordinates": `${latitude}, ${longitude}`,
+								"Address": address,
+								"LGA": lga,
+								"PU No.": pollingUnit,
+								"Party Agent": agentParty,
+								"Party Agent No.": phoneNumber,
 								...rest,
-        "created At": dayjs(createdAt).format("MMM DD, YYYY"),
 							}:{};
 						}),
 					);
@@ -150,6 +157,8 @@ const ViewLocation = () => {
 					}}
 				/>
 			</div>
+
+			<Footer />
 		</div>
 	);
 };

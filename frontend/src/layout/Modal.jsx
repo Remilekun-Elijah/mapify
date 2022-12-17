@@ -17,7 +17,7 @@ export default function ModalOne({
 		showModal && (
 			<>
 				<div
-					className="overlay no-js-hide flex items-center justify-center"
+					className="overlay no-js-hide flex items-center justify-center z-50"
 					onClick={(e) => {if(e.target.classList.contains('overlay')) setModal((_) => false)}}>
 				<div
 					className={`modal rounded-2xl py-1 px-2`}

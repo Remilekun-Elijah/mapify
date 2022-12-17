@@ -100,7 +100,7 @@ export default function Table({
 					<span className="ml-auto text-white">Unselect All</span>
 				</div>
 			</div>
-					<div className="sm:overflow-x-hidden overflow-x-auto">
+					<div className="md:overflow-x-hidden overflow-x-auto">
 			<table className="border-collapse w-full table-auto">
 				<thead className="border-spacing-y-20">
 					<tr className="">
@@ -152,7 +152,7 @@ export default function Table({
 														key={res._id + "_" + i}
 														className="td truncate text-center capitalize">
 														{typeof value == "string" &&
-														value.startsWith("https") ? (
+														(value.startsWith("https") || value.startsWith("http")) ? (
 															<center><img
 															className="cursor-pointer"
 															onClick={_=>window.open(value, "_blank")}
