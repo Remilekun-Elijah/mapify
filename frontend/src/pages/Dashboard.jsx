@@ -8,8 +8,11 @@ import Map from "../components/Map";
 import Select from "../components/Select/Select";
 import { capitalize, lgas } from "../utils/helper";
 import BACKEND from "../utils/backend";
+import Alert from "../utils/alert";
 
+const options = ["LGA", ...lgas];
 const Api = new BACKEND();
+
 const Dashboard = () => {
 const [mapData, setMapData] = React.useState([])
 const [lga, setLga] = React.useState("")
@@ -21,22 +24,23 @@ const [showModal, setModal] = useState(false)
 		lng: 3.601521,
 		};
 
-let fetchLocation = _=> Api.send({
+let fetchLocation = _=> {
+	if(lga) Alert({message: "Applying filter...", type: "info"})
+	Api.send({
 	type: "get",
 	to: `/location/?lga=${lga}`,
 	useAlert: false
 }).then(res=>{
-		setMapData(res?.data?.locations)
+		if(res.success) {
+			setMapData(res?.data?.locations)
+			if(lga) Alert({message: "Filter applied successfully", type: "success"})
+		}
 }).catch(console.error);
+}
 
 		React.useEffect(()=>{
 			 fetchLocation()
 		}, [lga])
-	
-		React.useEffect(()=> {
-			if(!lgas.includes('LGA')) lgas.unshift("LGA")
-		},[])
-		
 	
 	return (
 		<div className="h-screen overflowX-hidden">
@@ -45,9 +49,9 @@ let fetchLocation = _=> Api.send({
 				<div className="flex items-cente">
 					<p className="mr-2">Filter by</p>
 					<Select {...{
-						options: lgas.map((name) => ({
+						options: options.map((name) => ({
 							name,
-							value: name==='LGA' ? "" : capitalize(name) })),
+							value: name === 'LGA' ? "" : capitalize(name) })),
 						value: lga,
 						selectClass: "bg-[#eee] shadow-md py-1",
 						name: "lga",
