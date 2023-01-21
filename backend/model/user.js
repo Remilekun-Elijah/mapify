@@ -2,8 +2,7 @@ const {
  Schema,
  model
 } = require("mongoose");
-const bcrypt = require("bcryptjs")
-
+const bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(10);
 
 const userSchema = new Schema({
@@ -11,24 +10,9 @@ const userSchema = new Schema({
  email: {
   type: String,
   unique: true,
-  
  },
  role: String,
  password: String
-}, {
- timestamps: true
-})
-
-const locationSchema = new Schema({
- description: String,
- longitude: Number,
- latitude: Number,
- image: String,
- address: String,
- pollingUnit: String,
- agentParty: String,
- phoneNumber: String,
- lga: String
 }, {
  timestamps: true
 })
@@ -39,5 +23,4 @@ userSchema.pre("save", function (next, option) {
  next()
 })
 
-exports.User =  model("user", userSchema);
-exports.Location =  model("location", locationSchema)
+module.exports =  model("user", userSchema);

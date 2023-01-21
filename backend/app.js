@@ -3,7 +3,6 @@ const mongoose = require("mongoose")
 const config = require('./utils/config');
 const app = express();
 
-console.log(config);
 mongoose.connect(config.mongodbUrl, (error)=> {
  if(error) console.error(error)
  else console.log("Database Connected")

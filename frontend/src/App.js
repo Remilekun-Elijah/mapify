@@ -12,6 +12,7 @@ import LocationDetails from './pages/LocationDetails';
 function App() {
   
   return (
+    <div className="App overflow-auto">
     <BrowserRouter>
     {/* The rest of your app goes here */}
     <Routes>
@@ -37,9 +38,8 @@ function App() {
         </div>
       } />
       </Routes>
-     
-    
   </BrowserRouter>
+  </div>
   );
 }
 

@@ -22,12 +22,11 @@ const Login = () => {
 		}
 		const res = await backend.send({
 			type: "post",
-			to: "/login",
+			to: "/auth/login",
 			payload
 		});
 		
 		if(res?.success){
-			console.log(res);
 			Storage.set("authToken", res.authToken)
 		navigate("/dashboard");
 		Alert({ type: "success", message: res.message });

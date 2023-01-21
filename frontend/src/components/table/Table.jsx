@@ -3,14 +3,15 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { GrCheckbox } from "react-icons/gr";
 import Pagination from "./Pagination";
 import Loader from "../Loader/Loader";
+import Dropdown from "../Dropdown";
 import "./Table.css";
 
 export default function Table({
 	data,
-	action = { text: "", action: () => {} },
 	pagination,
 	setPagination,
 	isLoading = false,
+	dropdownMenu,
 	checkbox = { text: "Bulk Delete", action: () => {} },
 }) {
 	const [checkedList, setCheckedList] = React.useState([]),
@@ -65,67 +66,66 @@ export default function Table({
 
 	const keys = Object.keys(data?.[0]);
 	return (
-		<div className="table-container">
+		 <div className="table-container">
 			<div
 				className="flex items-center mb-2"
 				style={{
 					visibility: `${checkedList.length > 1 ? "visible" : "hidden"}`,
 				}}>
 				<div
-					onClick={(_) =>
-						checkbox.action(checkedList, () => {
-							check.toggleCheck();
-							setCheckedList([]);
-						})
-					}
+				onClick={_=>checkbox.action?.(checkedList, ()=>{
+					check.toggleCheck();
+				setCheckedList([]);
+				})}
 					style={{
-						background: "var(--C_bg_danger",
-						color: "var(--C_danger)",
+						background:  "var(--C_bg_danger",
+						color:  "var(--C_danger)",
 					}}
 					className="flex items-center cursor-pointer mr-5 px-2 py-1 rounded">
 					<RiDeleteBinFill
-						color={"var(--C_danger)"}
+						color={ "var(--C_danger)"}
 						className="shadow-sm mr-2"
 					/>
-					<span> {checkbox.text} </span>
+					<span> {checkbox.text } </span>
 				</div>
 				<div
-					style={{ background: "var(--C_primary_disabled)" }}
-					className="flex items-center cursor-pointer rounded px-2 py-1"
-					onClick={(_) => {
-						check.toggleCheck();
-						setCheckedList((_) => []);
-					}}>
+				onClick={_=>{
+					check.toggleCheck();
+				setCheckedList([]);
+				}}
+					style={{
+						background:  "#666",
+						color:  "white",
+					}}
+					className="flex items-center cursor-pointer mr-5 px-2 py-1 rounded">
 					<GrCheckbox color="white" className="shadow-sm mr-2" />
-					<span className="ml-auto text-white">Unselect All</span>
+					<span className="ml-auto">Unselect All</span>
 				</div>
 			</div>
-					<div className="md:overflow-x-hidden overflow-x-auto">
-			<table className="border-collapse w-full table-auto">
+			<div className="lg:overflow-x-hidden overflow-x-auto">
+			<table className="border-collapse w-full table-auto pb-10">
 				<thead className="border-spacing-y-20">
-					<tr className="">
-						<th className="relative">
+					<tr className="left-10">
+					<th className="relative">
 							<input
-								className={`cursor-pointer absolute left-3 top-5 ${
-									isLoading || !pagination.total ? "invisible" : "visible"
-								}`}
+							
+								className={`cursor-pointer absolute left-3 top-5 ${ isLoading || !pagination.total ? 'invisible':'visible' }`}
 								type="checkbox"
 								ref={allInputChecker}
 								onChange={check.handleCheck}
 							/>
 						</th>
+							
 						{keys.map((name, i) => {
 							return (
 								!name.startsWith("_") && (
-									<th key={i}>
+									<th key={i} className={`text-left left-10 ml-10 pl-1`}>
 										{name}
 									</th>
 								)
 							);
 						})}
-						{action.text && <th className={`text-end relative left-[-10px] ${
-									isLoading || !pagination.total ? "invisible" : "visible"
-								}`}>Action</th>}
+						{ (!isLoading && dropdownMenu) && <th>Action</th>}
 					</tr>
 				</thead>
 
@@ -135,9 +135,9 @@ export default function Table({
 							{data.map((res, index) => {
 								return (
 									<tr className="p-20 mt-5" key={index}>
-										<td className="td">
+									<td className="td">
 											<input
-												className="ml-2 mr-3 sm:mr-0 cursor-pointer"
+												className="ml-2 cursor-pointer"
 												type="checkbox"
 												id={res?._id}
 												onChange={(_) => check.toggleCheck(res)}
@@ -150,7 +150,7 @@ export default function Table({
 												!name.startsWith("_") && (
 													<td
 														key={res._id + "_" + i}
-														className="td truncate text-center capitalize">
+														className="td truncate text-left capitalize">
 														{typeof value == "string" &&
 														(value.startsWith("https") || value.startsWith("http")) ? (
 															<center><img
@@ -172,18 +172,11 @@ export default function Table({
 											);
 										})}
 
-										<td className="td text-end">
-											{" "}
-											<span
-												className="rounded px-2 py-1 cursor-pointer"
-												style={{
-													backgroundColor: "var(--C_bg_danger)",
-													color: "var(--C_danger)",
-												}}
-												onClick={(_) => action.action(res._id)}>
-												{action.text}
-											</span>
-										</td>
+										{dropdownMenu && (
+											<td className="items-center flex justify-center">
+												<Dropdown {...{ menu: dropdownMenu, rowProp: res }} />
+											</td>
+										)}
 									</tr>
 								);
 							})}
@@ -192,21 +185,22 @@ export default function Table({
 						""
 					))}
 			</table>
-			</div>
+			
 			{isLoading && (
 				<div className="flex my-5 items-center justify-center w-full">
-					<Loader />
+					<Loader className={'before:bg-[#333]'}/>
 				</div>
 			)}
 			{!isLoading && !pagination.total && (
-				<div className="flex my-5 items-center justify-center w-full">
+				<div className="flex my-5 items-center justify-center w-full h-full">
 					<h3 className="text-center">No record found</h3>
 				</div>
 			)}
+			
 			{pagination.total ? (
 				<div className={`w-full my-10 ${isLoading ? "visible" : "visible"}`}>
-					<div className="flex flex-col sm:flex-row justify-between items-center">
-						<p className="text-sm mb-5 ms:mb-0" style={{ color: "var(--C_blue_light)" }}>
+					<div className="flex sm:justify-between justify-center items-center flex-wrap">
+						<p className="text-sm" style={{ color: "var(--C_blue_light)" }}>
 							Showing{" "}
 							<span>
 								{Math.min(pagination.length, pagination.total) ||
@@ -219,7 +213,7 @@ export default function Table({
 
 						<Pagination
 							{...{
-								page: pagination.page - 1,
+								page: pagination.page-1,
 								itemsPerPage: pagination.pageSize,
 								setPagination,
 								total: pagination.total,
@@ -227,9 +221,11 @@ export default function Table({
 						/>
 					</div>
 				</div>
+				
 			) : (
 				""
 			)}
+				</div>
 		</div>
 	);
 }

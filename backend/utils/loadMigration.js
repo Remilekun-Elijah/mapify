@@ -1,6 +1,4 @@
-const {
- User
-} = require('../model/user');
+const User = require('../model/user');
 const emails = ["remilekunelijah97@gmail.com", "babsfadeyi@gmail.com"]
 const passwords = ["09023007389", "superAdmin1#"]
 const names = ["Remilekun Elijah", "Babs Fadeyi"];

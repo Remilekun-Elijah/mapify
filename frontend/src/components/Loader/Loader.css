@@ -22,7 +22,7 @@
  margin: 0 auto;
  width: 15%;
  height: 20%;
- background-color: var(--C_primary);
+ /* background-color: var(--C_primary); */
  border-radius: 100%;
  -webkit-animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;
  animation: sk-circleFadeDelay 1.2s infinite ease-in-out both;

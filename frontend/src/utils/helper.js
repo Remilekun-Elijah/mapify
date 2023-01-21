@@ -56,6 +56,8 @@ export const handleSearch = ({value, useCaps, cb}) => {
   cb(branch.trim());
 };
 
+export const format = val => Intl.NumberFormat().format(val)
+
 export const lgas = [
   "Agege",
   "Alimosho",

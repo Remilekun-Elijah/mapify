@@ -16,14 +16,24 @@ export default function LocationDetails() {
 			<Header />
 
 			<div className="px-[10%]">
-				<div className="mt-20 flex items-center mb-10 ">
+				<div className="mt-20 flex items-center justify-between mb-10 ">
+					<div>
+					<div className="flex">
 					<img
 						src={IArrowBack}
 						alt="arrow back"
-						className="cursor-pointer mr-2 sm:mr-5 mt-1 hover:bg-slate-500 p-2 rounded-full"
+						className="cursor-pointer mr-2 sm:mr-5 mt- hover:bg-slate-500 p-2 rounded-full"
 						onClick={(_) => navigate(-1)}
 					/>{" "}
-					<strong className="text-lg sm:text-2xl">Location Details</strong>
+					<strong className="text-md sm:text-2xl mt-1">Location Details</strong>
+					</div>
+					</div>
+
+					<button
+						className="px-5 py-1 bg-slate-500 hover:bg-slate-900 rounded text-white"
+						onClick={(_) => navigate("/add-new-location", {state})}>
+						Edit
+					</button>
 				</div>
 				<div>
 					{state.image &&

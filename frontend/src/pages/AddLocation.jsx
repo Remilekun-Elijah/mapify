@@ -3,18 +3,22 @@ import { capitalize, lgas } from "../utils/helper";
 import Input from "../components/Input/InputOne";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Alert from "../utils/alert";
-import BACKEND from "../utils/backend";
 import { IArrowBack } from "../utils/icons";
 import SelectTwo from "../components/Select/SelectTwo";
 import Footer from "../components/Footer";
+import Location from "../action/location";
+
 
 const Button = styled.button``;
-const Api = new BACKEND();
 
 export default function AddLocation() {
-	const values = {
+	
+	const navigate = useNavigate(),
+	[isSubmitting, setSubmit] = React.useState(false),
+	{ state } = useLocation(),
+	values = {
 		description: "",
 		latitude: 0,
 		longitude: 0,
@@ -24,11 +28,10 @@ export default function AddLocation() {
 		agentParty: "",
 		phoneNumber: "",
 		lga: "",
-	};
-	const navigate = useNavigate();
-	const [formData, setFormData] = React.useState(values),
-		[isSubmitting, setSubmit] = React.useState(false);
-
+	},
+	{__v, _id, createdAt, updatedAt, image, ...rest} = state || {},
+	[formData, setFormData] = React.useState(state ? rest : values);
+	
 	const addData = ({ target: { name, value } }) => {
 		setFormData((state) => ({ ...state, [name]: value }));
 	};
@@ -37,11 +40,7 @@ export default function AddLocation() {
 		e.preventDefault();
 		setSubmit(true);
 		try {
-			const res = await Api.send({
-				type: "post",
-				to: "/location",
-				payload: formData,
-			});
+			const res = state ? await Location.edit(formData, _id) : await Location.add(formData)
 
 			if (res?.success) {
 				Alert({ type: "success", message: res?.message });
@@ -60,7 +59,7 @@ export default function AddLocation() {
 		<div className="w-full h-screen">
 			<Header />
 
-			<div className=" flex justify-center px-[10%] mt-20">
+			<div className=" flex justify-center px-[10%] mt-16">
 				<form
 					className="modal__one rounded-2xl  md:w-[600px] w-80% border-0  mb-10"
 					onSubmit={handleSubmit}>
@@ -72,7 +71,7 @@ export default function AddLocation() {
 								className="cursor-pointer mr-2 sm:mr-5 mt-1 hover:bg-slate-500 p-2 rounded-full"
 								onClick={(_) => navigate(-1)}
 							/>{" "}
-							<strong className="text-lg sm:text-2xl">Add New Location</strong>
+							<strong className="text-lg sm:text-2xl">{state ? "Edit Location" : "Add Location"}</strong>
 						</div>
 
 						<div>
@@ -205,7 +204,7 @@ export default function AddLocation() {
 								type={"submit"}
 								disabled={isSubmitting}>
 								{" "}
-								{isSubmitting ? "Sending..." : "Add Location"}{" "}
+								{isSubmitting ? "Sending..." : state ? "Update Location" : "Add Location"}{" "}
 							</Button>
 						</div>
 					</div>

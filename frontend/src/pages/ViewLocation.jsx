@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useCallback } from "react";
 import Header from "../components/Header";
 import Delete from "../components/Modal/Delete";
 import Table from "../components/table/Table";
 import Alert from "../utils/alert";
 import BACKEND from "../utils/backend";
-
+import Menu from "../utils/data.dropdown";
 import { IArrowBack, IEmpty } from "../utils/icons";
 import { useNavigate } from "react-router-dom";
 import Footer from "../components/Footer";
-
-
+import Location from "../action/location";
 
 const Api = new BACKEND();
 
@@ -18,47 +17,58 @@ const ViewLocation = () => {
 	const [modals, setModals] = React.useState({
 		delete: false,
 		isLoading: false,
-  userId: "",
-  name: "",
-  type: "Location"
+		userId: [],
+		name: "",
+		type: "Location",
+		cb: () => {},
+		action: () => {},
 	});
 
- const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [locations, setLocations] = React.useState([{}]);
 
-	const deleteAction = React.useCallback((onSuccess, onError) => {
-  const isBulk = modals.name;
-			Api.send({
-				type: isBulk ? "patch": "delete",
-				to: `/location${!isBulk ? "/" + modals.userId : ""}`,
-				useAlert: false,
-    payload: isBulk ? {locationIds: modals.userId} : {}
-			})
-				.then((res) => {
-					if (res.success) {
-						getLocations(pagination);
-						if(onSuccess) {
-       onSuccess();
-       if(modals.cb) modals.cb()
-      }
-      setModals(state=>({...state, userId: "", name: "", type: "Location"}))
-					} else {
-						Alert({
-							type: "error",
-							message: res.message,
-						});
-						if(onError) onError();
-					}
-				})
-				.catch((err) => {
-					onError();
-					console.error(err);
-				});
-	}, [modals.userId, modals.name]);
+	const deleteBulk = useCallback(
+		(payload, cb) => {
+			const deleteAction = (onSuccess, onError) =>
+				Location.bulkDelete(payload)
+					.then((res) => {
+						if (res.success) {
+							getLocations();
+							if (onSuccess) {
+								onSuccess();
+								if (modals.cb) modals.cb();
+							}
+							setModals((state) => ({
+								...state,
+								userId: "",
+								name: "",
+								type: "Location",
+							}));
+						} else {
+							Alert({
+								type: "error",
+								message: res.message,
+							});
+							if (onError) onError();
+						}
+					})
+					.catch((err) => {
+						onError();
+						console.error(err);
+					});
 
- const deleteBulk = (payload, cb) => {
-   setModals(state => ({...state, type: "Locations", name: `the ${payload.length} selected locations`, userId: payload, delete: true, cb}))
- }
+			setModals((state) => ({
+				...state,
+				type: "Locations",
+				name: `the ${payload.length} selected locations`,
+				userId: payload,
+				delete: true,
+				cb,
+				action: deleteAction,
+			}));
+		},
+		[],
+	);
 
 	const [pagination, setPagination] = React.useState({
 		page: 1,
@@ -68,7 +78,7 @@ const ViewLocation = () => {
 		search: "",
 	});
 
-	const getLocations = (pagination) => {
+	const getLocations = () => {
 		Api.send({
 			type: "get",
 			to: `/location/?page=${pagination.page}&pageSize=${pagination.pageSize}`,
@@ -79,20 +89,36 @@ const ViewLocation = () => {
 					const { pageSize, total, locations } = res?.data;
 					setLocations(
 						locations?.map((data) => {
-							const { description, longitude, latitude, image, address, pollingUnit, phoneNumber, createdAt, agentParty,  updatedAt, lga, ...rest } = data;
-							return data?{
+							const {
+								description,
+								longitude,
+								latitude,
 								image,
-								"Coordinates": `${latitude}, ${longitude}`,
-								"Address": address || "N/A",
-								"LGA": lga || "N/A",
-								"PU No.": pollingUnit || "N/A",
-								"Party Agent": agentParty || "N/A",
-								"Party Agent No.": phoneNumber || "N/A",
-								...rest,
-							}:{};
+								address,
+								pollingUnit,
+								phoneNumber,
+								createdAt,
+								agentParty,
+								updatedAt,
+								lga,
+								...rest
+							} = data;
+							return data
+								? {
+										image,
+										Coordinates: `${latitude}, ${longitude}`,
+										Address: address || "N/A",
+										LGA: lga || "N/A",
+										"PU No.": pollingUnit || "N/A",
+										"Party Agent": agentParty || "N/A",
+										"Party Agent No.": phoneNumber || "N/A",
+										...rest,
+										_data: data,
+								  }
+								: {};
 						}),
 					);
-     // console.log(locations);
+					// console.log(locations);
 					setPagination((state) => ({
 						...state,
 						locations,
@@ -106,54 +132,83 @@ const ViewLocation = () => {
 			.catch(console.error);
 	};
 
+	const menu = new Menu({
+		action: Location,
+		refresh: getLocations,
+		type: "Location",
+		setModal: setModals,
+		setFormData: (val) =>
+			setModals((state) => ({ ...state, disabledInfo: val })),
+	});
+	const dropdownMenu = [
+		menu.viewLocation({ navigate }),
+		menu.editLocation({ navigate }),
+		menu.deleteLocation({
+			actionName: "delete",
+			cb: ({ name, action }) => {
+				setModals((state) => ({ ...state, type: name, delete: true, action }));
+			},
+		}),
+	];
+
 	React.useEffect(() => {
 		setModals((state) => ({ ...state, isLoading: true }));
-		getLocations(pagination);
+		getLocations();
 	}, [pagination.page]);
 
 	return (
 		<div>
 			<Header />
 			<div className="px-[10%]">
-   <div className="flex flex-col items-center justify-between sm:flex-row  mt-20 mb-10 ">
-    <div className="flex items-center">
-							<img
-								src={IArrowBack}
-								alt="arrow back"
-								className="cursor-pointer mr-2 sm:mr-5 mt-1 hover:bg-slate-500 p-2 rounded-full"
-								onClick={(_) => navigate(-1)}
-							/>{" "}
-							<strong className="text-lg sm:text-2xl">View All Locations</strong>
-       </div>
-       <button className="px-5 mt-3 sm:mt-0 py-1 bg-slate-500 hover:bg-slate-900 rounded text-white" onClick={_=> navigate('/add-new-location')}>Add New</button>
-						</div>
+				<div className="flex  items-center justify-between flex-wrap  mt-16 mb-5 ">
+					<div className="flex items-center">
+						<img
+							src={IArrowBack}
+							alt="arrow back"
+							className="cursor-pointer mr-2 sm:mr-5 hover:bg-slate-500 p-2 rounded-full"
+							onClick={(_) => navigate(-1)}
+						/>{" "}
+						<strong className="text-md sm:text-2xl">View Locations</strong>
+					</div>
+					<button
+						className="px-5 mt- sm:mt-0 py-1 bg-slate-500 hover:bg-slate-900 rounded text-white"
+						onClick={(_) => navigate("/add-new-location")}>
+						Add New
+					</button>
+				</div>
 
-				{locations.length?<Table
-					{...{
-						data: locations,
-						isLoading: modals.isLoading,
-						pagination,
-						setPagination,
-      checkbox: {text: "Bulk Delete", action: deleteBulk},
-						action: {
-							text: "Delete",
-							action: id => setModals((state) => ({ ...state, delete: true, userId: id })),
-						},
-					}}
-				/>:
-    <div className="flex flex-col items-center mt-20">
-     <img src={IEmpty} alt="Not found"  style={{width: "100px", height: "100px"}}/>
-    <h1 className="text-xl mt-10">No location at the moment</h1>
-    </div>
-    }
+				<div className="py-5">
+				{locations.length ? (
+					<Table
+						{...{
+							data: locations,
+							isLoading: modals.isLoading,
+							pagination,
+							setPagination,
+							dropdownMenu,
+							checkbox: { text: "Bulk Delete", action: deleteBulk },
+						}}
+					/>
+				) : (
+					<div className="flex flex-col items-center mt-20">
+						<img
+							src={IEmpty}
+							alt="Not found"
+							style={{ width: "100px", height: "100px" }}
+						/>
+						<h1 className="text-xl mt-10">No location at the moment</h1>
+					</div>
+				)}
+				</div>
+
 				<Delete
 					{...{
 						type: modals.type,
 						setModal: (val) =>
 							setModals((state) => ({ ...state, delete: val })),
 						showModal: modals.delete,
-      action: deleteAction,
-      name: modals.name
+						action: modals.action,
+						name: modals.name,
 					}}
 				/>
 			</div>

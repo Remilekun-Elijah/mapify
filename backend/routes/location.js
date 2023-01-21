@@ -1,10 +1,15 @@
 const Api = require("express").Router();
-const { LocationController } = require('../controllers/user')
+const LocationController = require('../controllers/location')
 
-Api.post("/", LocationController.create)
-Api.get("/", LocationController.getAll)
-Api.delete("/:id", LocationController.deleteOne)
-Api.patch("/", LocationController.deleteBulk)
+Api.route("/")
+ .post(LocationController.create)
+ .get(LocationController.getAll)
+ .patch(LocationController.deleteBulk);
+
+ Api.route("/:id")
+ .delete(LocationController.deleteOne)
+ .put(LocationController.edit);
+
 Api.put("/image/:id", LocationController.uploadImage)
 
 module.exports = Api
